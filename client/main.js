@@ -1,22 +1,55 @@
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
+import { Apparels } from '/imports/api/apparels.js';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+Template.list.helpers({
+  	getApparels() {
+    	return Apparels.find();
+  	},
 });
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
+Template.search.events({
+  	'click button#create'(event, instance) {
+  		Router.go("/apparel/add");
+  	},
 });
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
+Template.list.events({
+  	'click button#update'(event, instance) {
+  		Router.go("/apparel/update");
+  	},
+  	'click button#delete'(event, instance) {
+  		var element = document.getElementById("modal-apparel");
+    	element.classList.add("is-active");
+  	},
+});
+
+Template.addForm.events({
+  	'click button#cancel'(event, instance) {
+  		Router.go("/apparel");
+  	},
+});
+
+Template.modal.events({
+  	'click button#cancelModal'(event, instance) {
+  		var element = document.getElementById("modal-apparel");
+    	element.classList.remove("is-active");
+  	},
+});
+
+Router.route('/', function () {
+  this.render('apparelList');
+});
+
+Router.route('/apparel', function () {
+  this.render('apparelList');
+});
+
+Router.route('/apparel/add', function () {
+  this.render('apparelItem');
+});
+
+Router.route('/apparel/update', function () {
+  this.render('apparelItem');
 });
