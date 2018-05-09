@@ -1,0 +1,42 @@
+<head>
+  <title>Catalogue Application</title>
+  <link href="/bulma.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <h3 class="title is-3">Apparel List</h3>
+
+  {{> search}}
+  {{> list}}
+</body>
+
+<template name="search">
+  <form method="get">
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" name="searchName" type="text" placeholder="Find apparel">
+      </div>
+      <div class="control">
+        <button class="button is-link">Search</button>
+      </div>
+    </div>
+  </form>
+</template>
+
+<template name="list">
+  <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th width="80">Apparel ID</th>
+        <th width="120">Apparel Name</th>
+        <th width="120">Apparel Price</th>
+        <th width="60">Apparel Stock</th>
+      </tr>
+    </thead>
+    <tbody>     
+        <tr> 
+          <td colspan="4"><center><b>Data not found.</b></center></td> 
+        </tr>
+    </tbody>
+  </table>
+</template>
