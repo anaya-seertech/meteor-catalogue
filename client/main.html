@@ -6,7 +6,14 @@
 <template name="apparelList">    
     <body>
         <div class="container">
-            <h3 class="title is-3">Apparel List</h3>
+            <div class="level">
+                <div class="level-left">
+                    <h3 class="title is-3">Apparel List</h3>
+                </div>
+                <div class="level-right">
+                     <p>{{> loginButtons}}</p>
+                </div>    
+            </div>    
             {{> search}}
             {{> list}}
             {{> modal}}
@@ -16,7 +23,9 @@
 <template name="search">
     <div class="level">
         <div class="level-left">
-            <button class="button is-link level-item" id="create">Add Apparel</button>
+            {{#if isAdmin}}
+                <button class="button is-link level-item" id="create">Add Apparel</button>
+            {{/if}}
         </div>
         <form method="get" class="level-right">
             <div class="field has-addons level-item">
@@ -50,12 +59,19 @@
 </template>
 
 <template name="apparel">
-    <input class="input" id={{_id}} type="hidden" value={{_id}} placeholder="Find apparel">
     <tr>
         <td>{{name}}</td> 
         <td>{{price}}</td> 
         <td>{{stock}}</td> 
-        <td><button class="button is-primary" id="update">Update</button><button class="button is-danger" id="delete">Delete</button></td>
+        <td id="formButton">
+            {{#if isAdminItem admin}}
+                <button class="button is-primary" id="update">Update</button>
+                <button class="button is-danger" id="delete">Delete</button>
+            {{/if}}
+            {{#if isCustomerItem admin}}
+                <button class="button is-info" id="update">Add to Cart</button>
+            {{/if}}
+        </td>
     </tr>  
 </template>
 
