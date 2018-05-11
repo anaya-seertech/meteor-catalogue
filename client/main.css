@@ -6,3 +6,7 @@ button{
 .message_body{
 	padding: 10px;
 }
+
+#nameField, #priceField, #stockField{
+	display: none;
+}

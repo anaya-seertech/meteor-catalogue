@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';  
-import '../imports/api/index.js';
+import { setupApi } from '../imports/api/admin.js';  
+import { setupApiCart } from '../imports/api/customer.js';  
 
-Meteor.startup(() => {  
-  // code to run on server at startup
+Meteor.startup(() => {
+   setupApi(); 
+   setupApiCart(); 
 });
