@@ -6,6 +6,7 @@
 <template name="apparelList">    
     <body>
         <div class="container">
+            <br/>
             <div class="level">
                 <div class="level-left">
                     <h3 class="title is-3">Apparel List</h3>
@@ -17,6 +18,8 @@
             {{> search}}
             {{> list}}
             {{> modal}}
+            {{> modalSuccess}}
+            {{> modalCart}}
         </div>     
     </body>
 </template>
@@ -25,6 +28,9 @@
         <div class="level-left">
             {{#if isAdmin}}
                 <button class="button is-link level-item" id="create">Add Apparel</button>
+            {{/if}}
+            {{#if isCustomer}}
+                <button class="button is-link level-item" id="cartPage">Cart</button>
             {{/if}}
         </div>
         <form method="get" class="level-right">
@@ -47,13 +53,20 @@
                 <th width="160">Apparel Name</th>
                 <th width="160">Apparel Price</th>
                 <th width="160">Apparel Stock</th>
-                <th width="60"></th>
+                {{#if and currentUser notCheckList}} 
+                    <th width="60"></th>  
+                {{/if}}
             </tr>
         </thead>
-        <tbody>     
+        <tbody>
+            {{#if checkList}}
+                <tr>
+                    <td colspan="4"><center><b>No data found.</b></center></td> 
+                </tr>   
+            {{/if}}
             {{#each getApparels}}
                 {{> apparel}}
-            {{/each}}
+            {{/each}} 
         </tbody>
      </table>
 </template>
@@ -63,15 +76,22 @@
         <td>{{name}}</td> 
         <td>{{price}}</td> 
         <td>{{stock}}</td> 
-        <td id="formButton">
-            {{#if isAdminItem admin}}
-                <button class="button is-primary" id="update">Update</button>
-                <button class="button is-danger" id="delete">Delete</button>
-            {{/if}}
-            {{#if isCustomerItem admin}}
-                <button class="button is-info" id="update">Add to Cart</button>
-            {{/if}}
-        </td>
+        {{#if currentUser}}
+            <td>
+                {{#if isAdmin}}
+                    <button class="button is-primary" id="update">Update</button>
+                    <button class="button is-danger" id="delete">Delete</button>
+                {{/if}}
+                {{#if isCustomer}}
+                    {{#if outOfStock stock}}
+                        <button class="button is-info" id="addToCart" disabled>Add to Cart</button>
+                    {{/if}}
+                    {{#if hasStock stock}}
+                        <button class="button is-info" id="addToCart">Add to Cart</button>
+                    {{/if}}    
+                {{/if}}
+            </td>
+        {{/if}}
     </tr>  
 </template>
 
@@ -81,7 +101,7 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Delete Apparel</p>
-                <button class="delete" aria-label="close"></button>
+                <button class="delete" aria-label="close" id="cancelModal"></button>
             </header>
             <section class="modal-card-body">
                 <div class="message is-danger">
@@ -91,8 +111,58 @@
                 </div>    
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-danger" id="delete">Delete</button>
+                <button class="button is-danger" id="confirmDelete">Delete</button>
                 <button class="button" id="cancelModal">Cancel</button>
+            </footer>
+        </div>
+    </div>
+</template>
+
+<template name="modalSuccess">
+    <div class="modal" id="modal-success">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Success</p>
+                <button class="delete" aria-label="close" id="closeModal"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="message is-success">
+                    <div class="message_body">
+                        Apparel deleted successfully.
+                    </div>    
+                </div>    
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button" id="closeModal">Close</button>
+            </footer>
+        </div>
+    </div>
+</template>
+
+<template name="modalCart">
+    <div class="modal" id="modal-cart">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Add to Cart</p>
+                <button class="delete" aria-label="close" id="closeCartModal"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="columns">
+                    <div class="column">
+                        <label class="label">Name</label>
+                        <input class="input" type="text" value={{getItemData}} placeholder="Disabled input" disabled>
+                        <label class="label">Quantity</label>    
+                        <input class="input is-expanded" type="text" id="cartQuantity" placeholder="Input quantity"> 
+                    </div>
+                    <div class="column">
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-info" id="confirmAdd">Add</button>
+                <button class="button" id="closeCartModal">Cancel</button>
             </footer>
         </div>
     </div>

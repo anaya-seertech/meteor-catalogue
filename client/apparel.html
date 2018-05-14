@@ -1,6 +1,7 @@
 <template name="apparelItem">    
     <body>
         <div class="container">
+            <br>
             <h3 class="title is-3">{{getAction}} Apparel</h3>
             {{> addForm}}
         </div>     
@@ -10,53 +11,43 @@
     <div class="columns">
         <div class="column">
             {{#if getActionUpdate}}
-                <div class="field">
+                <form id="updateForm">
                     <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" value={{getApparel.name}} placeholder="Input name">
-                    </div>
+                    <input class="input is-expanded" type="text" name="updateName" value={{getApparel.name}} placeholder="Input name">
                     <label class="label">Price</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" value={{getApparel.price}} placeholder="Input price">
+                    <input class="input is-expanded" type="text" name="updatePrice" value={{getApparel.price}} placeholder="Input price">
+                    <label class="label">Stock</label>    
+                    <input class="input is-expanded" type="text" name="updateStock" value={{getApparel.stock}} placeholder="Input stock"> 
+                    <br/>  
+                    <br/>  
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <input class="button is-link" id="update" type="submit" value="Submit">
+                        </div>
+                        <div class="control">
+                            <button class="button is-light" type="button" id="cancel">Cancel</button>
+                        </div>
                     </div>
-                    <label class="label">Stock</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" value={{getApparel.stock}} placeholder="Input stock">
-                    </div>
-                </div>
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link">Submit</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-light" id="cancel">Cancel</button>
-                    </div>
-                </div>
+                </form>    
             {{else}}
-                <div class="field">
+                <form id="createForm">
                     <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" placeholder="Text input">
-                    </div>
+                    <input class="input is-expanded" type="text" name="createName" placeholder="Input name">
                     <label class="label">Price</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" placeholder="Text input">
+                    <input class="input is-expanded" type="text" name="createPrice" placeholder="Input price">
+                    <label class="label">Stock</label>    
+                    <input class="input is-expanded" type="text" name="createStock" placeholder="Input stock"> 
+                    <br/>  
+                    <br/>  
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <input class="button is-link" id="create" type="submit" value="Submit">
+                        </div>
+                        <div class="control">
+                            <button class="button is-light" type="button" id="cancel">Cancel</button>
+                        </div>
                     </div>
-                    <label class="label">Stock</label>
-                    <div class="control">
-                        <input class="input is-expanded" type="text" placeholder="Text input">
-                    </div>
-                </div>
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link">Submit</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-light" id="cancel">Cancel</button>
-                    </div>
-                </div>
+                </form>
             {{/if}}
         </div>
         <div class="column">

@@ -3,8 +3,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import Apparels from './apparels';
+import Cart from './cart';
 
 if(Meteor.isServer){
+
     async function getApparel(req, res) {  
         const apparel = await Apparels.findOne(req.params.id);
 
@@ -14,7 +16,7 @@ if(Meteor.isServer){
     async function updateApparel(req, res) {  
         const result = await Apparels.update(req.params.id, 
             { $set: 
-                { name: req.body.name, price: req.body.price, stock: req.body.stock } 
+                { name: req.body.name, price: req.body.price, stock: req.body.stock, admin: req.body.admin} 
             });
         const apparel = await Apparels.findOne(req.params.id);
 
@@ -22,6 +24,7 @@ if(Meteor.isServer){
     }
 
     async function deleteApparel(req, res) {  
+        const resultCart = await Cart.remove({item_id: req.params.id});
         const result = await Apparels.remove(req.params.id);
 
         res.status(202).json({ data: result });
@@ -37,7 +40,8 @@ if(Meteor.isServer){
         const apparelId = await Apparels.insert({ 
             name: req.body.name, 
             price: req.body.price, 
-            stock: req.body.stock 
+            stock: req.body.stock, 
+            admin: req.body.admin
         });
 
         const apparel = await Apparels.findOne(apparelId);
