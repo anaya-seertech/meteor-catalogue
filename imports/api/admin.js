@@ -6,6 +6,16 @@ import Apparels from './apparels';
 import Cart from './cart';
 
 if(Meteor.isServer){
+    async function searchApparel(req, res) {
+        var name = req.params.searchName;
+        Apparels.rawCollection().createIndex({"name": "text"});
+        const apparel = await Apparels.find( { $text: { $search: name } } )
+        var final = [];
+        apparel.forEach(function(doc){
+          final.push(doc);
+        });
+        res.status(200).json({ data: final });
+    }
 
     async function getApparel(req, res) {  
         const apparel = await Apparels.findOne(req.params.id);
@@ -57,6 +67,7 @@ if(Meteor.isServer){
         app.delete('/api/apparels/:id', deleteApparel);
         app.get('/api/apparels', getApparels);
         app.post('/api/apparels', addApparel);
+        app.get('/api/search/:searchName', searchApparel);
         app.get('/api', (req, res) => {
             res.status(200).json({ message: 'Hello World!!!'});
         });
