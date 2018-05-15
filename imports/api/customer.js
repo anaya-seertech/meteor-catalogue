@@ -44,7 +44,7 @@ if(Meteor.isServer){
     async function updateCartApparel(req, res) { 
         const result = await Cart.update({item_id: req.body.item_id}, 
             { $set: 
-                {item_quantity: (parseInt(req.body.old_quantity) + parseInt(req.body.item_quantity)), item_stock: req.body.item_stock} 
+                {item_quantity: (parseInt(req.body.old_quantity) + parseInt(req.body.item_quantity)), item_stock: req.body.item_stock, item_price: req.body.item_price, total: req.body.total} 
             });
         const cart = await Cart.findOne({item_id: req.params.item_id});
         res.status(200).json({ data: cart });
@@ -68,7 +68,8 @@ if(Meteor.isServer){
             item_name: req.body.item_name, 
             item_quantity: req.body.item_quantity, 
             item_stock: req.body.item_stock, 
-            item_price: req.body.item_price
+            item_price: req.body.item_price,
+            total: req.body.total
         });
 
         const cartItem = await Cart.findOne(cartItemId);
